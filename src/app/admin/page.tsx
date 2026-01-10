@@ -45,7 +45,7 @@ const stats = [
 
 export default function AdminDashboard() {
     return (
-        <div className="flex flex-col gap-8 pb-10">
+        <div className="flex flex-col gap-4 pb-10">
             <div className="flex flex-col gap-4">
                 <h1 className="text-3xl font-bold tracking-tight">Donations Dashboard</h1>
 
