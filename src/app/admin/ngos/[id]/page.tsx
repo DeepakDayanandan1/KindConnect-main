@@ -21,7 +21,7 @@ export default function NgoDetailPage({ params }: { params: Promise<{ id: string
     }
 
     return (
-        <div className="space-y-8 max-w-5xl mx-auto pb-10">
+        <div className="space-y-4 w-full mx-auto pb-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-bold tracking-tight">{ngo.name}</h1>
                 <div className="text-sm font-medium text-muted-foreground">ID: {ngo.id}</div>
@@ -33,7 +33,7 @@ export default function NgoDetailPage({ params }: { params: Promise<{ id: string
                     <CardTitle className="text-lg font-medium">NGO Profile</CardTitle>
                     <p className="text-sm text-muted-foreground">Details of the NGO organization.</p>
                 </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-4">
                         <div className="space-y-1">
                             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Contact Person</label>

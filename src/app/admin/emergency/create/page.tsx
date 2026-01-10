@@ -33,13 +33,13 @@ export default function CreateEmergencyCase() {
     };
 
     return (
-        <div className="space-y-8 max-w-4xl mx-auto pb-12">
+        <div className="space-y-4 w-full mx-auto pb-6">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Create Emergency Case</h1>
                 <p className="text-muted-foreground">Add a new urgent fundraising appeal.</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Hero Section */}
                 <Card>
                     <CardHeader>
@@ -65,7 +65,7 @@ export default function CreateEmergencyCase() {
 
                         <div className="grid gap-2">
                             <Label>Cover Image</Label>
-                            <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-2 hover:bg-muted/10 transition-colors cursor-pointer bg-muted/5">
+                            <div className="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center gap-2 hover:bg-muted/10 transition-colors cursor-pointer bg-muted/5">
                                 <Upload className="h-8 w-8 text-muted-foreground" />
                                 <span className="text-sm font-medium text-muted-foreground">Click to upload cover image</span>
                             </div>
@@ -135,7 +135,7 @@ export default function CreateEmergencyCase() {
                                 </div>
                                 <div className="grid gap-2">
                                     <Label>QR Code Image</Label>
-                                    <div className="border-2 border-dashed rounded-lg h-32 flex flex-col items-center justify-center gap-2 hover:bg-muted/10 transition-colors cursor-pointer bg-muted/5">
+                                    <div className="border-2 border-dashed rounded-lg h-24 flex flex-col items-center justify-center gap-2 hover:bg-muted/10 transition-colors cursor-pointer bg-muted/5">
                                         <Upload className="h-6 w-6 text-muted-foreground" />
                                         <span className="text-xs font-medium text-muted-foreground">Upload QR Code</span>
                                     </div>
@@ -155,14 +155,14 @@ export default function CreateEmergencyCase() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div
                                 onClick={handleImageUpload}
-                                className="aspect-[3/4] rounded-lg border-2 border-dashed flex flex-col items-center justify-center p-4 gap-2 hover:bg-muted/10 transition-colors cursor-pointer bg-muted/5"
+                                className="h-32 w-full rounded-lg border-2 border-dashed flex flex-col items-center justify-center p-4 gap-2 hover:bg-muted/10 transition-colors cursor-pointer bg-muted/5"
                             >
                                 <Plus className="h-6 w-6 text-muted-foreground" />
                                 <span className="text-xs font-medium text-muted-foreground text-center">Add Document</span>
                             </div>
 
                             {images.map((img, idx) => (
-                                <div key={idx} className="aspect-[3/4] rounded-lg border overflow-hidden relative group">
+                                <div key={idx} className="h-32 w-full rounded-lg border overflow-hidden relative group">
                                     <Image src={img} alt="doc" fill className="object-cover" />
                                     <Button
                                         type="button"

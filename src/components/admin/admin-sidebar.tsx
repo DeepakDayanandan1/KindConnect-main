@@ -49,7 +49,7 @@ export function AdminSidebar() {
     const pathname = usePathname();
 
     return (
-        <div className="flex h-screen w-64 flex-col border-r bg-card text-card-foreground">
+        <div className="flex sticky top-0 h-screen w-64 flex-col border-r bg-card text-card-foreground">
             <div className="flex h-14 items-center border-b px-4">
                 <Link href="/admin" className="flex items-center gap-2 font-bold text-xl text-primary">
                     <span>SamoohamKart Admin</span>
