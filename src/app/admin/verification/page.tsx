@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, ExternalLink, Calendar as CalendarIcon, Utensils, ShoppingBasket, Banknote, Clock, FileText, Video, Mic, Image as ImageIcon } from "lucide-react";
+import { Check, X, ExternalLink, Calendar as CalendarIcon, Utensils, ShoppingBasket, Banknote, Clock, FileText, Video, Mic, Image as ImageIcon, GraduationCap } from "lucide-react";
 import { verificationRequests } from "@/lib/mock-data";
 import {
     Sheet,
@@ -27,7 +27,7 @@ export default function VerificationPage() {
     const [requests, setRequests] = useState(verificationRequests || []);
     const [selectedReq, setSelectedReq] = useState<any>(null);
     const [sheetOpen, setSheetOpen] = useState(false);
-    const [date, setDate] = useState<Date | undefined>(new Date()); // Mock date for calendar
+    const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({ from: new Date(), to: undefined });
 
     const handleAction = (id: string, action: 'accept' | 'reject') => {
         console.log(`${action}ing request`, id);
@@ -46,6 +46,8 @@ export default function VerificationPage() {
             case 'Meal': return <Utensils className="h-4 w-4" />;
             case 'Grocery': return <ShoppingBasket className="h-4 w-4" />;
             case 'Fund': return <Banknote className="h-4 w-4" />;
+            case 'Fund': return <Banknote className="h-4 w-4" />;
+            case 'StudentSponsorship': return <GraduationCap className="h-4 w-4" />;
             default: return <FileText className="h-4 w-4" />;
         }
     };
@@ -67,9 +69,13 @@ export default function VerificationPage() {
                         <Card key={req.id} className="overflow-hidden hover:border-primary/50 transition-colors">
                             <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
                                 <div className="space-y-1">
-                                    <Badge variant="outline" className="w-fit flex gap-1 items-center mb-2">
-                                        {getIcon(req.type)} {req.type} Request
-                                    </Badge>
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                        {req.requirements.map((r: any, i: number) => (
+                                            <Badge key={i} variant="outline" className="w-fit flex gap-1 items-center">
+                                                {getIcon(r.type)} {r.type}
+                                            </Badge>
+                                        ))}
+                                    </div>
                                     <CardTitle className="text-lg font-semibold">{req.ngoName}</CardTitle>
                                     <p className="text-xs text-muted-foreground">ID: {req.id} • {req.date}</p>
                                 </div>
@@ -78,9 +84,16 @@ export default function VerificationPage() {
                                 </div>
                             </CardHeader>
                             <CardContent className="text-sm text-muted-foreground">
-                                {req.type === 'Meal' && <span>Requested meals for dates around {req.details.date}.</span>}
-                                {req.type === 'Grocery' && <span>Request list containing {req.items.length} items.</span>}
-                                {req.type === 'Fund' && <span>Financial assistance request of ₹{req.amount.toLocaleString()}.</span>}
+                                <ul className="list-disc list-inside space-y-1">
+                                    {req.requirements.map((r: any, i: number) => (
+                                        <li key={i}>
+                                            {r.type === 'Meal' && `Meals from ${r.details.dateRange.from} to ${r.details.dateRange.to}`}
+                                            {r.type === 'Grocery' && `Grocery list (${r.items.length} items)`}
+                                            {r.type === 'Fund' && `Fund: ₹${r.amount.toLocaleString()}`}
+                                            {r.type === 'StudentSponsorship' && `Sponsoring ${r.students.length} student(s)`}
+                                        </li>
+                                    ))}
+                                </ul>
                             </CardContent>
                             <CardFooter className="bg-muted/30 p-3 px-6 flex justify-between items-center text-xs text-muted-foreground">
                                 <span>Action Required</span>
@@ -107,7 +120,7 @@ export default function VerificationPage() {
                                     <div className="space-y-1">
                                         <SheetTitle className="text-2xl">{selectedReq.ngoName}</SheetTitle>
                                         <SheetDescription>
-                                            Editing {selectedReq.type} Request details
+                                            Reviewing {selectedReq.requirements.length} requirement(s)
                                         </SheetDescription>
                                     </div>
                                     <Badge variant="secondary" className="text-sm px-3 py-1 h-7">
@@ -118,103 +131,162 @@ export default function VerificationPage() {
 
                             <div className="flex-1 overflow-y-auto p-6 space-y-8">
                                 {/* Dynamic Content based on Type */}
-                                {selectedReq.type === 'Meal' && (
-                                    <div className="space-y-6">
-                                        <div className="grid md:grid-cols-2 gap-8">
-                                            <Card className="border-0 shadow-none bg-transparent">
-                                                <div className="font-semibold mb-4 flex items-center gap-2">
-                                                    <CalendarIcon className="h-4 w-4" /> Select Meal Date
+                                {selectedReq.requirements.map((reqItem: any, index: number) => (
+                                    <Card key={index} className="border-l-4 border-l-primary shadow-sm">
+                                        <CardHeader className="bg-muted/5 pb-3">
+                                            <div className="flex items-center gap-2">
+                                                <div className="p-2 bg-background rounded-full border shadow-sm">
+                                                    {getIcon(reqItem.type)}
                                                 </div>
-                                                <Calendar
-                                                    mode="single"
-                                                    selected={date}
-                                                    onSelect={setDate}
-                                                    className="rounded-md border bg-background shadow-sm w-fit mx-auto md:mx-0"
-                                                />
-                                            </Card>
-                                            <div className="space-y-6">
-                                                <div>
-                                                    <Label className="text-base font-semibold mb-3 block">Meal Slots for 21/11/2025</Label>
-                                                    <div className="flex gap-2 mb-6">
-                                                        <Button variant="default" size="sm" className="rounded-full px-6">Breakfast</Button>
-                                                        <Button variant="outline" size="sm" className="rounded-full px-6">Lunch</Button>
-                                                        <Button variant="outline" size="sm" className="rounded-full px-6">Dinner</Button>
+                                                <CardTitle className="text-lg font-semibold">{reqItem.type} Requirement</CardTitle>
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent className="pt-6">
+                                            {reqItem.type === 'Meal' && (
+                                                <div className="space-y-6">
+                                                    <div className="grid md:grid-cols-2 gap-8">
+                                                        <Card className="border shadow-none bg-muted/5">
+                                                            <CardContent className="pt-6">
+                                                                <div className="font-semibold mb-4 flex items-center gap-2">
+                                                                    <CalendarIcon className="h-4 w-4" /> Selected Meal Date Range
+                                                                </div>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    <Badge variant="secondary">From: {reqItem.details.dateRange.from}</Badge>
+                                                                    <Badge variant="secondary">To: {reqItem.details.dateRange.to}</Badge>
+                                                                </div>
+                                                                <Calendar
+                                                                    mode="range"
+                                                                    selected={{
+                                                                        from: new Date(reqItem.details.dateRange.from),
+                                                                        to: new Date(reqItem.details.dateRange.to)
+                                                                    }}
+                                                                    className="rounded-md border bg-background shadow-sm w-fit mx-auto md:mx-0 mt-4"
+                                                                />
+                                                            </CardContent>
+                                                        </Card>
+                                                        <div className="space-y-6">
+                                                            <div>
+                                                                <Label className="text-base font-semibold mb-3 block">Meal Slots</Label>
+                                                                <div className="grid gap-4 mb-6">
+                                                                    {['Breakfast', 'Lunch', 'Dinner'].map(slot => (
+                                                                        <div key={slot} className="flex items-center gap-4 p-3 border rounded-lg bg-background/50">
+                                                                            <Button
+                                                                                variant={reqItem.details.slots.includes(slot) ? "default" : "outline"}
+                                                                                size="sm"
+                                                                                className="rounded-full w-24"
+                                                                            >
+                                                                                {slot}
+                                                                            </Button>
+
+                                                                            <div className="flex items-center gap-2">
+                                                                                <Label className="text-xs text-muted-foreground whitespace-nowrap">Price (₹)</Label>
+                                                                                <Input
+                                                                                    className="w-20 h-8"
+                                                                                    type="number"
+                                                                                    defaultValue={reqItem.details.slotPrices?.[slot] || (slot === 'Breakfast' ? 40 : 80)}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                            <div className="space-y-3">
+                                                                <Label>Dietary Notes</Label>
+                                                                <Input defaultValue={reqItem.details.dietaryRestrictions} />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="space-y-3">
-                                                    <Label>Booking Status</Label>
-                                                    <Select defaultValue="processing">
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Select status" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectItem value="processing">Processing</SelectItem>
-                                                            <SelectItem value="approved">Approved</SelectItem>
-                                                            <SelectItem value="rejected">Rejected</SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </div>
-                                                <div className="space-y-3">
-                                                    <Label>Dietary Notes</Label>
-                                                    <Input defaultValue={selectedReq.details.dietaryRestrictions} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                                            )}
 
-                                {selectedReq.type === 'Grocery' && (
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <Label className="text-lg font-semibold">Requirement List</Label>
-                                            <Button size="sm" variant="outline"><Utensils className="mr-2 h-3 w-3" /> Add Item</Button>
-                                        </div>
-                                        <div className="rounded-md border bg-background overflow-hidden">
-                                            <Table>
-                                                <TableHeader className="bg-muted/50">
-                                                    <TableRow>
-                                                        <TableHead className="w-[50%]">Item Name</TableHead>
-                                                        <TableHead>Quantity</TableHead>
-                                                        <TableHead className="text-right">Est. Price</TableHead>
-                                                    </TableRow>
-                                                </TableHeader>
-                                                <TableBody>
-                                                    {selectedReq.items.map((item: any, i: number) => (
-                                                        <TableRow key={i}>
-                                                            <TableCell className="font-medium">
-                                                                <div className="flex flex-col">
-                                                                    <span>{item.name}</span>
-                                                                    <span className="text-xs text-muted-foreground">Standard quality</span>
+                                            {reqItem.type === 'Grocery' && (
+                                                <div className="space-y-4">
+                                                    <div className="flex items-center justify-between">
+                                                        <Label className="text-lg font-semibold">Requirement List</Label>
+                                                        <Button size="sm" variant="outline"><Utensils className="mr-2 h-3 w-3" /> Add Item</Button>
+                                                    </div>
+                                                    <div className="rounded-md border bg-background overflow-hidden">
+                                                        <Table>
+                                                            <TableHeader className="bg-muted/50">
+                                                                <TableRow>
+                                                                    <TableHead className="w-[50%]">Item Name</TableHead>
+                                                                    <TableHead>Quantity</TableHead>
+                                                                    <TableHead className="text-right">Est. Price</TableHead>
+                                                                </TableRow>
+                                                            </TableHeader>
+                                                            <TableBody>
+                                                                {reqItem.items.map((item: any, i: number) => (
+                                                                    <TableRow key={i}>
+                                                                        <TableCell className="font-medium">
+                                                                            <div className="flex flex-col">
+                                                                                <span>{item.name}</span>
+                                                                                <span className="text-xs text-muted-foreground">Standard quality</span>
+                                                                            </div>
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            <Input className="w-24 h-8" defaultValue={item.quantity} />
+                                                                        </TableCell>
+                                                                        <TableCell className="text-right font-medium">₹{item.price}</TableCell>
+                                                                    </TableRow>
+                                                                ))}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {reqItem.type === 'Fund' && (
+                                                <div className="grid gap-6 md:grid-cols-2">
+                                                    <div className="space-y-2">
+                                                        <Label>Amount Requested (₹)</Label>
+                                                        <Input defaultValue={reqItem.amount} className="text-lg font-bold" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label>Purpose</Label>
+                                                        <Input defaultValue={reqItem.purpose} />
+                                                    </div>
+                                                    <div className="col-span-2 space-y-2">
+                                                        <Label>Description</Label>
+                                                        <Textarea defaultValue={reqItem.description || "Urgent funds required for immediate repairs."} className="min-h-[100px]" />
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {reqItem.type === 'StudentSponsorship' && (
+                                                <div className="space-y-6">
+                                                    <div className="flex items-center justify-between">
+                                                        <Label className="text-lg font-semibold">Sponsor a Student's Future</Label>
+                                                    </div>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                        {reqItem.students.map((student: any, idx: number) => (
+                                                            <Card key={idx} className="flex flex-col items-center text-center p-6 gap-4 border shadow-sm">
+                                                                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-primary/20">
+                                                                    <Image
+                                                                        src={student.image}
+                                                                        alt={student.name}
+                                                                        fill
+                                                                        className="object-cover"
+                                                                    />
                                                                 </div>
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Input className="w-24 h-8" defaultValue={item.quantity} />
-                                                            </TableCell>
-                                                            <TableCell className="text-right font-medium">₹{item.price}</TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {selectedReq.type === 'Fund' && (
-                                    <div className="grid gap-6 md:grid-cols-2">
-                                        <div className="space-y-2">
-                                            <Label>Amount Requested (₹)</Label>
-                                            <Input defaultValue={selectedReq.amount} className="text-lg font-bold" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label>Purpose</Label>
-                                            <Input defaultValue={selectedReq.purpose} />
-                                        </div>
-                                        <div className="col-span-2 space-y-2">
-                                            <Label>Description</Label>
-                                            <Textarea defaultValue="Urgent funds required for immediate repairs." className="min-h-[100px]" />
-                                        </div>
-                                    </div>
-                                )}
+                                                                <div className="space-y-2">
+                                                                    <h3 className="font-bold text-lg">{student.name}</h3>
+                                                                    <p className="text-sm text-muted-foreground leading-relaxed">
+                                                                        {student.description}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="mt-auto w-full space-y-3">
+                                                                    <div className="p-2 bg-muted/30 rounded-md font-mono font-bold text-lg border">
+                                                                        ₹{student.amount}
+                                                                    </div>
+                                                                </div>
+                                                            </Card>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </CardContent>
+                                    </Card>
+                                ))}
 
                                 {/* Common Sections */}
                                 <Card>
@@ -239,10 +311,7 @@ export default function VerificationPage() {
                                 </div>
                             </div>
 
-                            <div className="p-6 border-t bg-background mt-auto flex justify-between items-center">
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <Clock className="h-4 w-4" /> Last updated: Today
-                                </div>
+                            <div className="p-6 border-t bg-background mt-auto flex justify-end items-center">
                                 <div className="flex gap-3">
                                     <Button variant="outline" className="text-destructive hover:bg-destructive hover:text-white" onClick={() => handleAction(selectedReq.id, 'reject')}>
                                         Reject Request

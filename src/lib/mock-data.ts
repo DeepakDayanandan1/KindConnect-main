@@ -95,14 +95,19 @@ export const verificationRequests = [
         id: "REQ-001",
         ngoName: "Hope Haven Shelter",
         ngoId: "NGO001",
-        type: "Meal",
         status: "Pending",
         date: "2024-01-10",
-        details: {
-            date: "2025-11-21",
-            slots: ["Breakfast", "Lunch"],
-            dietaryRestrictions: "Vegetarian only"
-        },
+        requirements: [
+            {
+                type: "Meal",
+                details: {
+                    dateRange: { from: "2025-11-21", to: "2025-11-25" },
+                    slots: ["Breakfast", "Lunch"],
+                    slotPrices: { "Breakfast": 40, "Lunch": 80, "Dinner": 80 },
+                    dietaryRestrictions: "Vegetarian only"
+                }
+            }
+        ],
         documents: [
             { type: "image", url: "#", name: "Kitchen Hygiene Cert" }
         ]
@@ -111,13 +116,17 @@ export const verificationRequests = [
         id: "REQ-002",
         ngoName: "Sunshine Elders Home",
         ngoId: "NGO002",
-        type: "Grocery",
         status: "Pending",
         date: "2024-01-09",
-        items: [
-            { name: "Rice", quantity: "50kg", price: 2500 },
-            { name: "Lentils", quantity: "20kg", price: 1800 },
-            { name: "Cooking Oil", quantity: "15L", price: 2100 }
+        requirements: [
+            {
+                type: "Grocery",
+                items: [
+                    { name: "Rice", quantity: "50kg", price: 2500 },
+                    { name: "Lentils", quantity: "20kg", price: 1800 },
+                    { name: "Cooking Oil", quantity: "15L", price: 2100 }
+                ]
+            }
         ],
         documents: []
     },
@@ -125,15 +134,82 @@ export const verificationRequests = [
         id: "REQ-003",
         ngoName: "Bright Futures Orphanage",
         ngoId: "NGO003",
-        type: "Fund",
         status: "Pending",
         date: "2024-01-08",
-        amount: 50000,
-        purpose: "Emergency Roof Repair",
+        requirements: [
+            {
+                type: "Fund",
+                amount: 50000,
+                purpose: "Emergency Roof Repair",
+                description: "Urgent funds required for immediate repairs."
+            }
+        ],
         documents: [
             { type: "pdf", url: "#", name: "Contractor Quote" },
             { type: "image", url: "#", name: "Damaged Roof Photo" }
         ]
+    },
+    {
+        id: "REQ-004", // Mixed Request
+        ngoName: "Community Care Center",
+        ngoId: "NGO004",
+        status: "Pending",
+        date: "2024-01-11",
+        requirements: [
+            {
+                type: "Meal",
+                details: {
+                    dateRange: { from: "2025-12-01", to: "2025-12-05" },
+                    slots: ["Lunch"],
+                    dietaryRestrictions: "None"
+                }
+            },
+            {
+                type: "Grocery",
+                items: [
+                    { name: "Wheat Flour", quantity: "100kg", price: 4000 },
+                    { name: "Sugar", quantity: "20kg", price: 1000 }
+                ]
+            },
+            {
+                type: "Fund",
+                amount: 15000,
+                purpose: "Winter Clothes Drive",
+                description: "Funds to buy blankets and jackets."
+            }
+        ],
+        documents: [
+            { type: "pdf", url: "#", name: "Event Propsal" }
+        ]
+    },
+    {
+        id: "REQ-005", // Student Sponsorship
+        ngoName: "EduCare Foundation",
+        ngoId: "NGO005",
+        status: "Pending",
+        date: "2024-01-12",
+        requirements: [
+            {
+                type: "StudentSponsorship",
+                students: [
+                    {
+                        name: "Rohan Kumar",
+                        image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&fit=crop",
+                        description: "Rohan is a talented aspiring engineer who excels in mathematics. A donation can help cover his tuition fees.",
+                        amount: 3000,
+                        sponsorshipType: "Education"
+                    },
+                    {
+                        name: "Priya Singh",
+                        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+                        description: "Priya has a passion for art and hopes to attend art school. Your contribution will enable her to purchase supplies.",
+                        amount: 2000,
+                        sponsorshipType: "Art Supplies"
+                    }
+                ]
+            }
+        ],
+        documents: []
     }
 ];
 
