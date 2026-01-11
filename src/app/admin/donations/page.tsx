@@ -226,7 +226,7 @@ export default function DonationHistoryPage() {
                                     <div className="grid grid-cols-2 gap-1">
                                         {/* Donor Information */}
                                         <Card className="rounded-sm shadow-sm border-2">
-                                            <CardHeader className="py-1 px-2 bg-muted/5">
+                                            <CardHeader className="py-0.5 px-2 bg-muted/5">
                                                 <div className="flex justify-between items-center">
                                                     <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Donor Details</CardTitle>
                                                     <span className="text-[10px] text-muted-foreground font-mono">ID: {selectedDonation.id.split('-')[1] || selectedDonation.id}</span>
@@ -238,17 +238,12 @@ export default function DonationHistoryPage() {
                                                     <p className="text-xs text-muted-foreground">{selectedDonation.donorDetails.email}</p>
                                                     <p className="text-xs text-muted-foreground">{selectedDonation.donorDetails.phone}</p>
                                                 </div>
-                                                <Separator />
-                                                <div>
-                                                    <Label className="text-[10px] text-muted-foreground uppercase">Notes</Label>
-                                                    <p className="text-xs text-muted-foreground mt-1">{selectedDonation.donorDetails.notes}</p>
-                                                </div>
                                             </CardContent>
                                         </Card>
 
                                         {/* Feedback */}
                                         <Card className="rounded-sm shadow-sm border-2">
-                                            <CardHeader className="py-1 px-2 bg-muted/5">
+                                            <CardHeader className="py-0.5 px-2 bg-muted/5">
                                                 <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Donor Feedback</CardTitle>
                                             </CardHeader>
                                             <CardContent className="pt-0 pb-2 px-2 h-full">
@@ -261,7 +256,7 @@ export default function DonationHistoryPage() {
 
                                     {/* Donated Items */}
                                     <Card className="rounded-sm shadow-sm border-2">
-                                        <CardHeader className="py-1 px-2 bg-muted/5">
+                                        <CardHeader className="py-0.5 px-2 bg-muted/5">
                                             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Items & Funds Received</CardTitle>
                                         </CardHeader>
                                         <CardContent className="pt-0 pb-2 px-2">
@@ -311,7 +306,7 @@ export default function DonationHistoryPage() {
 
                                     {/* Recipient Information */}
                                     <Card className="rounded-sm shadow-sm border-2">
-                                        <CardHeader className="py-1 px-2 bg-muted/5">
+                                        <CardHeader className="py-0.5 px-2 bg-muted/5">
                                             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recipient NGO</CardTitle>
                                         </CardHeader>
                                         <CardContent className="pt-0 pb-2 px-2 grid grid-cols-2 gap-1">
@@ -330,7 +325,7 @@ export default function DonationHistoryPage() {
                                     {/* Proofs */}
                                     <div className="grid grid-cols-2 gap-1">
                                         <Card className="rounded-sm shadow-sm border-2">
-                                            <CardHeader className="py-1 px-2 bg-muted/5 flex flex-row items-center justify-between">
+                                            <CardHeader className="py-0.5 px-2 bg-muted/5 flex flex-row items-center justify-between">
                                                 <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Proof of Usage</CardTitle>
                                                 <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 border-blue-200 text-blue-600 hover:bg-blue-50">approve</Button>
                                             </CardHeader>
@@ -346,7 +341,7 @@ export default function DonationHistoryPage() {
 
                                         {/* NGO Note */}
                                         <Card className="rounded-sm shadow-sm border-2">
-                                            <CardHeader className="py-1 px-2 bg-muted/5 flex flex-row items-center justify-between">
+                                            <CardHeader className="py-0.5 px-2 bg-muted/5 flex flex-row items-center justify-between">
                                                 <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Founder's Note</CardTitle>
                                                 <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 border-blue-200 text-blue-600 hover:bg-blue-50">submit</Button>
                                             </CardHeader>
@@ -367,11 +362,8 @@ export default function DonationHistoryPage() {
 
                                 {/* ACTION 2: Closing */}
                                 <div className="border-t pt-4 mt-4 flex flex-col items-center gap-4">
-                                    <p className="text-sm text-muted-foreground text-center max-w-md">
-                                        Once funds are transferred and proofs are verified, send the final impact report to the donor to close the loop.
-                                    </p>
                                     <Button className="w-full max-w-sm bg-green-600 hover:bg-green-700 h-12 text-base font-semibold shadow-md">
-                                        Send Impact Report to Donor <Send className="ml-2 h-4 w-4" />
+                                        Send Report to Donor <Send className="ml-2 h-4 w-4" />
                                     </Button>
                                 </div>
 
