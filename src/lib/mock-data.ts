@@ -134,7 +134,7 @@ export const verificationRequests = [
         id: "REQ-003",
         ngoName: "Bright Futures Orphanage",
         ngoId: "NGO003",
-        status: "Pending",
+        status: "Approved",
         date: "2024-01-08",
         requirements: [
             {
@@ -153,8 +153,8 @@ export const verificationRequests = [
         id: "REQ-004", // Mixed Request
         ngoName: "Community Care Center",
         ngoId: "NGO004",
-        status: "Pending",
-        date: "2024-01-11",
+        status: "Rejected",
+        date: "2024-01-05",
         requirements: [
             {
                 type: "Meal",
@@ -186,7 +186,7 @@ export const verificationRequests = [
         id: "REQ-005", // Student Sponsorship
         ngoName: "EduCare Foundation",
         ngoId: "NGO005",
-        status: "Pending",
+        status: "Approved (Edited)",
         date: "2024-01-12",
         requirements: [
             {
