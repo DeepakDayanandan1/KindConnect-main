@@ -30,10 +30,12 @@ export default function NGOsPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold tracking-tight">NGOs</h1>
                 <div className="flex items-center gap-4">
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add NGO
-                    </Button>
+                    <Link href="/admin/ngos/new">
+                        <Button>
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add NGO
+                        </Button>
+                    </Link>
                     <div className="flex w-full max-w-sm items-center space-x-2">
                         <Input
                             placeholder="Search NGOs..."

@@ -285,6 +285,7 @@ function EmptyState({ message }: { message: string }) {
 
 function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject, getIcon, onClose }: any) {
     const isPending = req.status === "Pending";
+    const [isEditing, setIsEditing] = useState(false);
 
     const updateRequirement = (reqIndex: number, field: string, value: any) => {
         const newReqs = [...req.requirements];
@@ -306,7 +307,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
 
     return (
         <div className="flex flex-col h-full bg-background">
-            <SheetHeader className="px-8 py-6 border-b sticky top-0 bg-background z-10">
+            <SheetHeader className="px-8 py-6 border-b sticky top-0 bg-background z-10 w-full">
                 <div className="flex items-center justify-between mb-1">
                     <SheetTitle className="text-2xl font-bold">{req.ngoName}</SheetTitle>
                     <Badge variant="outline" className="text-muted-foreground">{req.id}</Badge>
@@ -342,7 +343,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
                                                         className="text-lg font-semibold h-11"
                                                         value={r.amount}
                                                         onChange={(e) => updateRequirement(rIdx, 'amount', parseFloat(e.target.value))}
-                                                        disabled={!isPending}
+                                                        disabled={!isEditing}
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
@@ -351,7 +352,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
                                                         className="h-11"
                                                         value={r.purpose}
                                                         onChange={(e) => updateRequirement(rIdx, 'purpose', e.target.value)}
-                                                        disabled={!isPending}
+                                                        disabled={!isEditing}
                                                     />
                                                 </div>
                                             </div>
@@ -361,7 +362,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
                                                     className="min-h-[120px] resize-none"
                                                     value={r.description}
                                                     onChange={(e) => updateRequirement(rIdx, 'description', e.target.value)}
-                                                    disabled={!isPending}
+                                                    disabled={!isEditing}
                                                 />
                                             </div>
                                         </div>
@@ -371,7 +372,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between">
                                                 <Label className="text-base font-semibold">Requirement List</Label>
-                                                {isPending && <Button size="sm" variant="outline" className="h-8"><Utensils className="mr-2 h-3 w-3" /> Add Item</Button>}
+                                                {isEditing && <Button size="sm" variant="outline" className="h-8"><Utensils className="mr-2 h-3 w-3" /> Add Item</Button>}
                                             </div>
                                             <div className="rounded-lg border bg-muted/5 overflow-hidden">
                                                 <Table>
@@ -395,7 +396,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
                                                                     <Input
                                                                         className="w-32 h-9 bg-background"
                                                                         defaultValue={item.quantity}
-                                                                        disabled={!isPending}
+                                                                        disabled={!isEditing}
                                                                     // Note: In real app, bind this using updateNestedRequirement
                                                                     />
                                                                 </TableCell>
@@ -438,7 +439,7 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
                                                                     <Input
                                                                         className="w-24 pl-6 h-9 font-bold text-center"
                                                                         defaultValue={student.amount}
-                                                                        disabled={!isPending}
+                                                                        disabled={!isEditing}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -485,14 +486,28 @@ function VerificationDetails({ req, setReq, onApprove, onApproveEdited, onReject
             {/* Footer with Actions */}
             <div className="p-6 border-t bg-background mt-auto sticky bottom-0 z-10 w-full flex justify-end gap-3 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
                 {isPending ? (
-                    <>
-                        <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive hover:text-white px-6" onClick={onReject}>
-                            Reject Request
-                        </Button>
-                        <Button className="bg-primary hover:bg-primary/90 px-8" onClick={onApproveEdited}>
-                            Update & Approve
-                        </Button>
-                    </>
+                    isEditing ? (
+                        <>
+                            <Button variant="ghost" onClick={() => setIsEditing(false)}>
+                                Cancel Editing
+                            </Button>
+                            <Button className="bg-primary hover:bg-primary/90 px-8" onClick={onApproveEdited}>
+                                Update & Approve
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive hover:text-white px-6" onClick={onReject}>
+                                Reject Request
+                            </Button>
+                            <Button variant="outline" className="border-primary text-primary hover:bg-primary/5" onClick={() => setIsEditing(true)}>
+                                Edit Request
+                            </Button>
+                            <Button className="bg-primary hover:bg-primary/90 px-8" onClick={onApprove}>
+                                Approve
+                            </Button>
+                        </>
+                    )
                 ) : (
                     <div className="flex items-center gap-2 text-muted-foreground">
                         <span>Status:</span>
