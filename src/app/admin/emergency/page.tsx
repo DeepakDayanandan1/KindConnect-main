@@ -1,12 +1,13 @@
 "use client";
 
+
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Edit, Eye, X, Save, Upload, CreditCard, QrCode, FileText, ArrowLeft, Clock, Search, Filter } from "lucide-react";
+import { Plus, Trash2, Edit, Eye, X, Save, Upload, CreditCard, QrCode, FileText, ArrowLeft, Clock, Search, Filter, Briefcase, CheckCircle, Wallet, Users, Activity } from "lucide-react";
 import Image from "next/image";
 import {
     Sheet,
@@ -221,6 +222,61 @@ export default function EmergencyPage() {
                     <Plus className="mr-2 h-4 w-4" />
                     Add New Case
                 </Button>
+            </div>
+            {/* Stats Overview */}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Card className="bg-card border-l-4 border-l-blue-500 shadow-sm overflow-hidden group">
+                    <CardContent className="p-6">
+                        <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-blue-500/10 rounded-full text-blue-500 group-hover:bg-blue-500/20 transition-colors">
+                                <Briefcase className="h-6 w-6" />
+                            </div>
+                            <div>
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Active Cases</p>
+                                <h3 className="text-2xl font-bold mt-1">24</h3>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card className="bg-card border-l-4 border-l-emerald-500 shadow-sm overflow-hidden group">
+                    <CardContent className="p-6">
+                        <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-emerald-500/10 rounded-full text-emerald-500 group-hover:bg-emerald-500/20 transition-colors">
+                                <CheckCircle className="h-6 w-6" />
+                            </div>
+                            <div>
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Closed Cases</p>
+                                <h3 className="text-2xl font-bold mt-1">142</h3>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card className="bg-card border-l-4 border-l-teal-500 shadow-sm overflow-hidden group">
+                    <CardContent className="p-6">
+                        <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-teal-500/10 rounded-full text-teal-500 group-hover:bg-teal-500/20 transition-colors">
+                                <Wallet className="h-6 w-6" />
+                            </div>
+                            <div>
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Donations Received</p>
+                                <h3 className="text-2xl font-bold mt-1">₹42.8L</h3>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card className="bg-card border-l-4 border-l-purple-500 shadow-sm overflow-hidden group">
+                    <CardContent className="p-6">
+                        <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-purple-500/10 rounded-full text-purple-500 group-hover:bg-purple-500/20 transition-colors">
+                                <Users className="h-6 w-6" />
+                            </div>
+                            <div>
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Donors</p>
+                                <h3 className="text-2xl font-bold mt-1">5,280</h3>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
 
             {/* Filter/Search Bar */}

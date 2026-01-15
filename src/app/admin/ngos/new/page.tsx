@@ -64,7 +64,7 @@ export default function AddNGOPage() {
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="reg-number">Registration Number</Label>
-                                <Input id="reg-number" placeholder="e.g. KER/123/2023" />
+                                <Input id="reg-number" placeholder="e.g. SMK/123/2026" />
                             </div>
                         </div>
                         <div className="grid gap-2">
@@ -182,12 +182,12 @@ export default function AddNGOPage() {
                     </CardHeader>
                     <CardContent className="grid gap-3">
                         <div className="rounded-md bg-blue-50/50 p-4 text-sm text-blue-900 dark:bg-blue-900/20 dark:text-blue-200">
-                            <p>These credentials will allow the NGO staff to log in to the Kerala Connect Mobile App to manage their on-ground operations.</p>
+                            <p>These credentials will allow the NGO staff to log in to the Samooham Kart Mobile App to manage their on-ground operations.</p>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <Label>Unique Username</Label>
-                                <Input placeholder="@ngo_kerala_2024" />
+                                <Input placeholder="@samooham_kart_2026" />
                             </div>
                             <div className="grid gap-2">
                                 <Label>System Password</Label>
