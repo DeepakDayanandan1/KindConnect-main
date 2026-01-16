@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Edit, Eye, X, Save, Upload, CreditCard, QrCode, FileText, ArrowLeft, Clock, Search, Filter, Briefcase, CheckCircle, Wallet, Users, Activity } from "lucide-react";
+import { Plus, Trash2, Edit, Eye, X, Save, Upload, CreditCard, QrCode, FileText, ArrowLeft, Clock, Search, Filter, Briefcase, CheckCircle, Wallet, Users, Activity, Download } from "lucide-react";
 import Image from "next/image";
 import {
     Sheet,
@@ -92,6 +92,17 @@ const initialEmergencies = [
         documents: [
             { name: "Medical Diagnosis Report", type: "pdf", url: "#" },
             { name: "Hospital Estimate", type: "image", url: "#" }
+        ],
+        donors: [
+            { name: "Meera Ashokan", amount: 25000, date: "2024-10-22T14:30:00", status: "VERIFIED" },
+            { name: "Anonymous", amount: 5000, date: "2024-10-22T11:15:00", status: "VERIFIED" },
+            { name: "Rajesh Kumar", amount: 150000, date: "2024-10-21T17:45:00", status: "VERIFIED" },
+        ],
+        activityTimeline: [
+            { title: "New Medical Report Added", date: "2024-10-23T09:15:00", description: "Pre-surgery assessment uploaded by Admin (Sarah)." },
+            { title: "Emergency Funds Released", date: "2024-10-21T16:30:00", description: "₹50,000 transferred to hospital account for initial deposit." },
+            { title: "Goal Increased", date: "2024-10-18T11:20:00", description: "Revised surgery cost assessment from hospital led to ₹50k goal increase." },
+            { title: "Case Verified", date: "2024-10-15T14:00:00", description: "Documents verified by Field Officer." },
         ]
     }
 ];
@@ -218,10 +229,16 @@ export default function EmergencyPage() {
                     <h1 className="text-3xl font-bold tracking-tight">Emergency Requirements</h1>
                     <p className="text-muted-foreground">Manage urgent fund appeals displayed on the home page.</p>
                 </div>
-                <Button onClick={handleCreate}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add New Case
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline">
+                        <Download className="mr-2 h-4 w-4" />
+                        Export List
+                    </Button>
+                    <Button onClick={handleCreate}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add New Case
+                    </Button>
+                </div>
             </div>
             {/* Stats Overview */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -593,6 +610,56 @@ export default function EmergencyPage() {
                                                     )}
                                                 </div>
                                             </div>
+
+                                            {/* Recent Donors - NEW SECTION */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                                                        <Users className="h-4 w-4 text-muted-foreground" />
+                                                        Recent Donors
+                                                    </h3>
+                                                    <Button variant="link" className="text-xs h-auto p-0 text-primary">VIEW ALL</Button>
+                                                </div>
+
+                                                <div className="rounded-lg border bg-card">
+                                                    <Table>
+                                                        <TableHeader>
+                                                            <TableRow className="bg-muted/50 hover:bg-muted/50">
+                                                                <TableHead className="text-xs font-semibold uppercase tracking-wider h-9">Donor Name</TableHead>
+                                                                <TableHead className="text-xs font-semibold uppercase tracking-wider h-9">Amount</TableHead>
+                                                                <TableHead className="text-xs font-semibold uppercase tracking-wider h-9">Date</TableHead>
+                                                                <TableHead className="text-xs font-semibold uppercase tracking-wider h-9 text-right">Status</TableHead>
+                                                            </TableRow>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                            {(editData.donors || []).map((donor: any, i: number) => (
+                                                                <TableRow key={i} className="hover:bg-muted/20">
+                                                                    <TableCell className="font-medium">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
+                                                                                {donor.name.charAt(0)}
+                                                                            </div>
+                                                                            {donor.name}
+                                                                        </div>
+                                                                    </TableCell>
+                                                                    <TableCell className="text-primary font-medium">{formatCurrency(donor.amount)}</TableCell>
+                                                                    <TableCell className="text-xs text-muted-foreground">{new Date(donor.date).toLocaleDateString()}</TableCell>
+                                                                    <TableCell className="text-right">
+                                                                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 text-[10px] uppercase border-emerald-100">
+                                                                            {donor.status}
+                                                                        </Badge>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                            {(!editData.donors || editData.donors.length === 0) && (
+                                                                <TableRow>
+                                                                    <TableCell colSpan={4} className="text-center text-muted-foreground text-xs py-4">No recent donors.</TableCell>
+                                                                </TableRow>
+                                                            )}
+                                                        </TableBody>
+                                                    </Table>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         {/* Right Column: Media, Funding, Bank Inputs */}
@@ -693,6 +760,32 @@ export default function EmergencyPage() {
                                                         )}
                                                     </div>
                                                 )}
+                                            </div>
+
+                                            {/* Activity Log - NEW SECTION */}
+                                            <div className="space-y-4 rounded-xl border p-4 bg-muted/10">
+                                                <div className="flex items-center gap-2 font-semibold">
+                                                    <Activity className="h-4 w-4" /> Activity Log
+                                                </div>
+                                                <div className="space-y-6 pt-2 relative before:absolute before:inset-y-2 before:left-[6px] before:w-[2px] before:bg-muted-foreground/20">
+                                                    {(editData.activityTimeline || []).map((item: any, idx: number) => (
+                                                        <div key={idx} className="relative pl-6">
+                                                            <div className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-background bg-blue-500 ring-4 ring-background"></div>
+                                                            <div className="space-y-0.5">
+                                                                <p className="text-sm font-medium leading-none">{item.title}</p>
+                                                                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{new Date(item.date).toLocaleString([], { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                                                                <p className="text-xs text-muted-foreground mt-1 leading-snug">{item.description}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                    {(!editData.activityTimeline || editData.activityTimeline.length === 0) && (
+                                                        <p className="text-xs text-muted-foreground pl-4">No activity recorded.</p>
+                                                    )}
+
+                                                    <div className="relative pl-6 pt-2">
+                                                        <Button variant="link" className="text-xs p-0 h-auto text-muted-foreground hover:text-primary">LOAD MORE HISTORY</Button>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         </div>
